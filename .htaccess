@@ -1,0 +1,37 @@
+# Block direct access to dotfiles (.env, .git, .htaccess itself, etc).
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# Block direct access to SQL dumps and the raw schema.
+<FilesMatch "\.sql$">
+    Require all denied
+</FilesMatch>
+
+# Don't list folder contents when there's no index file (e.g. uploads/, storage/).
+Options -Indexes
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' https:; connect-src 'self' https://ipapi.co https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+</IfModule>
+
+RewriteEngine On
+
+# Serve the production build at the site root in Apache/XAMPP.
+RewriteRule ^$ /dist/index.html [L]
+RewriteRule ^assets/(.*)$ /dist/assets/$1 [L]
+
+# Serve existing files and folders directly.
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Keep API and database paths untouched.
+RewriteRule ^(api|database)/ - [L]
+
+# SPA fallback for client-side routes.
+RewriteRule . /dist/index.html [L]

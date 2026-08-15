@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc *)",
+      "Bash(curl -s http://localhost/)",
+      "Bash(curl -sI http://localhost/)",
+      "Bash(curl -sI http://localhost/assets/index-o4pknlFg.js)",
+      "Read(//c/xampp/apache/conf/**)",
+      "Read(//c/xampp/apache/conf/extra/**)",
+      "Bash(grep -v \"^$\")",
+      "Read(//c/Windows/System32/drivers/etc/**)"
+    ]
+  }
+}
