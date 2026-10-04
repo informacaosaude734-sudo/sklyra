@@ -78,7 +78,7 @@ export function Footer() {
       </div>
 
       <div className="vx-container mt-16 lg:mt-24" aria-hidden>
-        <p className="footer-vx t-display select-none">VX</p>
+        <p className="footer-vx select-none">VX</p>
       </div>
 
       <div className="vx-container border-t border-vx-line pb-28 pt-6 lg:pb-8">

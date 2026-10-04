@@ -7,16 +7,18 @@ import { CITY, STATE } from "@/config/brand";
 export function Rio() {
   return (
     <section aria-labelledby="rio-title" className="relative isolate overflow-hidden">
-      <Parallax amount={14} scale={1.16} className="absolute inset-0 -z-10">
-        <Image
+      <div aria-hidden className="absolute inset-0 -z-10">
+        <Parallax amount={14} scale={1.16} className="h-full">
+          <Image
           src="/media/textures/asphalt.webp"
           alt=""
           fill
           sizes="100vw"
           quality={82}
-          className="object-cover"
-        />
-      </Parallax>
+            className="object-cover"
+          />
+        </Parallax>
+      </div>
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-vx-black via-vx-black/35 to-vx-black" />
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-vx-black/80 via-transparent to-transparent" />
 

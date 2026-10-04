@@ -62,7 +62,7 @@ export function Space() {
         <div className={cn("shrink-0", pinned ? "flex h-[78vh] w-[34vw] flex-col justify-between pr-[4vw]" : "vx-container")}>
           <div>
             <p className="t-caps mb-6 text-vx-muted">O espaço</p>
-            <h2 id="espaco-title" className="t-display t-xl">
+            <h2 id="espaco-title" className={cn("t-display", pinned ? "t-l" : "t-xl")}>
               Entra.
               <br />
               Senta.

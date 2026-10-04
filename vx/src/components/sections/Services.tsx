@@ -109,7 +109,7 @@ export function Services() {
                     <span className="services__desc hidden text-vx-muted lg:col-span-3 lg:block">
                       {s.description}
                     </span>
-                    <span className="services__meta t-num text-right lg:col-span-2 lg:col-start-10">
+                    <span className="services__meta t-num text-right lg:col-span-3 lg:col-start-10">
                       <span className={cn("block font-semibold", s.price == null && "is-ph font-normal")}>{price}</span>
                       <span className={cn("t-small block text-vx-muted", s.durationMin == null && "is-ph")}>{duration}</span>
                     </span>
@@ -131,7 +131,7 @@ export function Services() {
                   </div>
                 </div>
 
-                <span aria-hidden className="services__book t-caps pointer-events-none absolute right-0 top-1/2 hidden -translate-y-1/2 items-center gap-2 text-vx-white lg:inline-flex">
+                <span aria-hidden className="services__book t-caps pointer-events-none absolute right-0 top-1/2 hidden -translate-y-1/2 items-center gap-2 text-vx-white xl:inline-flex">
                   <span className="lit" />
                   Agendar
                 </span>
