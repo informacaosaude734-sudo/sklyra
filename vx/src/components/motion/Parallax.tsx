@@ -42,7 +42,7 @@ export function Parallax({
 
   return (
     <div ref={outer} className={cn("relative overflow-hidden", className)}>
-      <div ref={inner} className="h-full w-full will-change-transform">
+      <div ref={inner} className="relative h-full w-full will-change-transform">
         {children}
       </div>
     </div>

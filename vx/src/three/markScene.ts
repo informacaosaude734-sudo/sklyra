@@ -45,10 +45,10 @@ export function chromeMaterial() {
   return new THREE.MeshPhysicalMaterial({
     color: new THREE.Color("#dfe3e8"),
     metalness: 1,
-    roughness: 0.16,
+    roughness: 0.12,
     clearcoat: 0.6,
     clearcoatRoughness: 0.08,
-    envMapIntensity: 1.15,
+    envMapIntensity: 1.3,
   });
 }
 
@@ -99,12 +99,19 @@ export function studioEnvironment(renderer: THREE.WebGLRenderer) {
   light(SODIUM, 7, [7, 0, 1.5], [0.6, 12]);
   // recorte de fundo frio
   light(white, 1.2, [-3, 1, -9], [6, 7]);
-  // linha horizontal ao fundo — a linha de corte refletida
-  light(white, 8, [0, 0, -8], [26, 0.12]);
+  // linha horizontal ao fundo
+  light(white, 6, [0, 0, -8], [26, 0.12]);
   // piso: rebatimento fraco de sódio
   light(SODIUM, 0.35, [0, -8, 2], [12, 6]);
-  // preenchimento frontal baixo para não perder a face
-  light(white, 0.5, [0, -1, 10], [8, 3]);
+
+  // Frente (atrás da câmera): é o que as faces da marca refletem.
+  // softbox grande no alto à esquerda — gradiente na face
+  light(white, 1.5, [-4.5, 3.2, 9], [8, 5.5]);
+  light(white, 0.45, [2.5, 1.5, 9.5], [5, 4]);
+  // a linha de corte, refletida na face como um traço de luz
+  light(white, 7, [0, 0.35, 9], [34, 0.1]);
+  // sódio baixo à direita
+  light(SODIUM, 1.3, [5, -3.4, 8.5], [6, 3]);
 
   const pmrem = new THREE.PMREMGenerator(renderer);
   const env = pmrem.fromScene(scene, 0.02).texture;

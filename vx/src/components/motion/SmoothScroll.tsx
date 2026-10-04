@@ -1,7 +1,7 @@
 "use client";
 
 import Lenis from "lenis";
-import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef } from "react";
 import { gsap, ScrollTrigger } from "./gsap";
 import { prefersReducedMotion } from "@/lib/motion";
 
@@ -27,7 +27,6 @@ export const useScroll = () => useContext(ScrollContext);
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
   const locks = useRef(0);
-  const [, force] = useState(0);
 
   useEffect(() => {
     const coarse = window.matchMedia("(pointer: coarse)").matches;
@@ -39,7 +38,6 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     const tick = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
-    force((n) => n + 1);
 
     return () => {
       gsap.ticker.remove(tick);

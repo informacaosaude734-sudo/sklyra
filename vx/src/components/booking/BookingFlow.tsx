@@ -1,7 +1,8 @@
 "use client";
 
 import { AnimatePresence, m, LazyMotion, domAnimation, MotionConfig } from "motion/react";
-import { useEffect, useId, useMemo, useState } from "react";
+import { useId, useMemo, useState, useSyncExternalStore } from "react";
+import Link from "next/link";
 import { BARBERS, BOOKING, SERVICES } from "@/config/brand";
 import {
   ANY_BARBER,
@@ -31,6 +32,8 @@ const STEP_COPY: Record<StepId, { label: string; title: string }> = {
 
 const WEEK_HEAD = ["D", "S", "T", "Q", "Q", "S", "S"];
 
+const noopSubscribe = () => () => {};
+
 export function BookingFlow({
   initial,
   onDone,
@@ -54,8 +57,12 @@ export function BookingFlow({
   const [sent, setSent] = useState(false);
   const [nameError, setNameError] = useState(false);
   // Datas dependem do relógio do visitante: calcula só no cliente.
-  const [days, setDays] = useState<Day[]>([]);
-  useEffect(() => setDays(upcomingDays()), []);
+  const isClient = useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false,
+  );
+  const days = useMemo<Day[]>(() => (isClient ? upcomingDays() : []), [isClient]);
 
   const step = steps[index];
   const service = serviceById(draft.serviceId);
@@ -322,6 +329,8 @@ function Options({
           return (
             <li key={o.value} className="border-b border-vx-line">
               <label
+                // clique de ponteiro (detail > 0) escolhe e avança; teclado só escolhe
+                onClick={(e) => e.detail > 0 && onPick(o.value, true)}
                 className={cn(
                   "group relative flex cursor-pointer items-baseline gap-4 py-4 transition-colors duration-[var(--dur-fast)]",
                   "has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-vx-sodium",
@@ -334,7 +343,6 @@ function Options({
                   value={o.value}
                   checked={checked}
                   onChange={() => onPick(o.value, false)}
-                  onClick={(e) => e.detail > 0 && onPick(o.value, true)}
                   className="sr-only"
                 />
                 {o.index && <span className="t-num t-small w-6 shrink-0 text-vx-muted">{o.index}</span>}
@@ -383,6 +391,7 @@ function Chip({
 }) {
   return (
     <label
+      onClick={(e) => !disabled && e.detail > 0 && onPick(true)}
       className={cn(
         "relative flex min-h-12 cursor-pointer select-none flex-col items-center justify-center rounded-[var(--radius-vx)] border px-2 py-2 text-center transition-[border-color,background-color,color] duration-[var(--dur-fast)]",
         "has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-vx-sodium",
@@ -400,7 +409,6 @@ function Chip({
         checked={checked}
         disabled={disabled}
         onChange={() => onPick(false)}
-        onClick={(e) => e.detail > 0 && onPick(true)}
         className="sr-only"
       />
       {children}
@@ -480,7 +488,15 @@ function Confirm({
         {rows.map(([k, v]) => (
           <div key={k} className="flex items-baseline justify-between gap-6 border-b border-vx-line py-3">
             <dt className="t-small text-vx-muted">{k}</dt>
-            <dd className={cn("t-num text-right font-semibold", v.includes("[") && "is-ph font-normal")}>{v}</dd>
+            <dd
+              className={cn(
+                "text-right font-semibold",
+                (k === "Valor" || k === "Duração" || k === "Horário") && "t-num",
+                v.includes("[") && "is-ph font-normal",
+              )}
+            >
+              {v}
+            </dd>
           </div>
         ))}
       </dl>
@@ -563,9 +579,9 @@ function Sent({ onDone, variant, headingId }: { onDone?: () => void; variant: "d
           Voltar ao site
         </button>
       ) : (
-        <a href="/" className="btn btn-ghost mt-10">
+        <Link href="/" className="btn btn-ghost mt-10">
           Voltar ao site
-        </a>
+        </Link>
       )}
     </div>
   );

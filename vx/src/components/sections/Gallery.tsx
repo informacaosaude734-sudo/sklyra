@@ -16,11 +16,11 @@ const PLACE = [
   "col-span-4 md:col-span-5 lg:col-span-5 lg:row-span-2",
   "col-span-3 col-start-2 md:col-span-3 md:col-start-6 md:mt-24 lg:col-span-6 lg:col-start-7 lg:mt-0",
   "col-span-2 md:col-span-3 md:col-start-6 lg:col-span-3 lg:col-start-7",
-  "col-span-2 mt-16 md:col-span-4 md:col-start-1 md:mt-0 lg:col-span-3 lg:col-start-10 lg:mt-28",
+  "col-span-2 mt-16 md:col-span-4 md:col-start-1 md:mt-0 lg:col-span-3 lg:col-start-10 lg:mt-16",
   "col-span-4 md:col-span-6 md:col-start-3 lg:col-span-7 lg:col-start-2",
-  "col-span-3 md:col-span-3 md:col-start-1 lg:col-span-3 lg:col-start-10 lg:row-span-2 lg:mt-40",
+  "col-span-3 md:col-span-3 md:col-start-1 lg:col-span-3 lg:col-start-10 lg:row-span-2 lg:mt-24",
   "col-span-2 col-start-3 md:col-span-4 md:col-start-5 md:-mt-32 lg:col-span-4 lg:col-start-1 lg:mt-0",
-  "col-span-2 col-start-1 -mt-20 md:col-span-3 md:col-start-2 md:mt-0 lg:col-span-3 lg:col-start-6 lg:mt-24",
+  "col-span-2 col-start-1 -mt-20 md:col-span-3 md:col-start-2 md:mt-0 lg:col-span-3 lg:col-start-6 lg:mt-12",
 ];
 
 const SIZES = [
@@ -89,7 +89,7 @@ export function Gallery() {
         </Reveal>
       </div>
 
-      <ul className="vx-grid mt-14 grid-flow-row-dense items-start gap-y-14 md:mt-20 lg:gap-y-20">
+      <ul className="vx-grid mt-14 grid-flow-row-dense items-start gap-y-10 md:mt-20 lg:gap-y-14">
         {GALLERY.map((g, i) => (
           <li key={g.id} className={cn("gallery__item", PLACE[i % PLACE.length])}>
             <button

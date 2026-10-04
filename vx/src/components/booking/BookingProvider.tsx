@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import {
   createContext,
@@ -12,7 +13,13 @@ import {
 } from "react";
 import { useScroll } from "@/components/motion/SmoothScroll";
 import { IconClose } from "@/components/ui/icons";
-import { BookingFlow } from "./BookingFlow";
+
+// O fluxo (e o Motion) só entra no bundle quando necessário; pré-carrega em idle.
+const loadFlow = () => import("./BookingFlow").then((m) => m.BookingFlow);
+const BookingFlow = dynamic(loadFlow, {
+  ssr: false,
+  loading: () => <div className="flex-1" aria-busy="true" />,
+});
 
 type OpenOpts = { serviceId?: string; barberId?: string };
 type Ctx = { open: (opts?: OpenOpts) => void; close: () => void };
@@ -34,6 +41,16 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const close = useCallback(() => dialogRef.current?.close(), []);
+
+  useEffect(() => {
+    const preload = () => void loadFlow();
+    if ("requestIdleCallback" in window) {
+      const id = window.requestIdleCallback(preload, { timeout: 4000 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const t = setTimeout(preload, 2500);
+    return () => clearTimeout(t);
+  }, []);
 
   useEffect(() => {
     const d = dialogRef.current;

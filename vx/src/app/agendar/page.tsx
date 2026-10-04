@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { BookingFlow } from "@/components/booking/BookingFlow";
+import { AgendarFlow } from "./AgendarFlow";
 import { VXMark } from "@/components/brand/VXMark";
 import { CITY, STATE } from "@/config/brand";
 
@@ -10,9 +12,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/agendar" },
 };
 
-export default async function AgendarPage(props: PageProps<"/agendar">) {
-  const sp = await props.searchParams;
-  const pick = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
+export default function AgendarPage() {
   return (
     <section className="relative min-h-[100svh] pt-[calc(var(--nav-h)+2rem)]">
       <div className="vx-grid gap-y-12 pb-20">
@@ -31,10 +31,9 @@ export default async function AgendarPage(props: PageProps<"/agendar">) {
           </p>
         </div>
         <div className="col-span-4 flex min-h-[38rem] flex-col border border-vx-line bg-vx-surface md:col-span-8 lg:col-span-6 lg:col-start-7">
-          <BookingFlow
-            variant="page"
-            initial={{ serviceId: pick(sp.servico), barberId: pick(sp.barbeiro) }}
-          />
+          <Suspense fallback={<BookingFlow variant="page" />}>
+            <AgendarFlow />
+          </Suspense>
         </div>
       </div>
     </section>

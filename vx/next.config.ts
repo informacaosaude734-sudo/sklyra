@@ -1,8 +1,11 @@
+import path from "node:path";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // O repositório tem outro package-lock na raiz: fixa a raiz deste projeto.
+  turbopack: { root: path.join(__dirname) },
   images: {
     formats: ["image/avif", "image/webp"],
     qualities: [70, 82, 90],

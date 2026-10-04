@@ -30,10 +30,7 @@ export function Navbar() {
 
   // Seção ativa = a que cruza o meio da tela.
   useEffect(() => {
-    if (pathname !== "/") {
-      setActive(null);
-      return;
-    }
+    if (pathname !== "/") return;
     const els = NAV.map((n) => document.getElementById(n.id)).filter(Boolean) as HTMLElement[];
     const io = new IntersectionObserver(
       (entries) => {
@@ -67,6 +64,7 @@ export function Navbar() {
   }, [unlock]);
 
   const wa = whatsappUrl();
+  const current = pathname === "/" ? active : null;
 
   return (
     <>
@@ -93,7 +91,7 @@ export function Navbar() {
           <nav aria-label="Principal" className="ml-auto hidden lg:block">
             <ul className="flex items-center gap-8">
               {NAV.map((item) => {
-                const on = active === item.id;
+                const on = current === item.id;
                 return (
                   <li key={item.id}>
                     <a
@@ -167,7 +165,7 @@ export function Navbar() {
                     className="t-display flex items-baseline justify-between py-3 text-[clamp(2.6rem,11vw,4.5rem)] text-vx-white"
                   >
                     <span>{item.label}</span>
-                    <span aria-hidden className={cn("lit", active === item.id ? "" : "opacity-0")} />
+                    <span aria-hidden className={cn("lit", current === item.id ? "" : "opacity-0")} />
                   </a>
                 </li>
               ))}
