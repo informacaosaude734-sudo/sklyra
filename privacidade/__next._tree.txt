@@ -1,0 +1,4 @@
+:HL["/sklyra/_next/static/chunks/1unkh8hztlljw.css","style"]
+:HL["/sklyra/_next/static/media/MonaSans_Variable_latin-s.p.1kdvxkggsr1nm.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/sklyra/_next/static/media/SchibstedGrotesk_Variable_latin-s.p.1n5gamcxs9g-p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"privacidade","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"R4fDnMflUldxh56LkG71q"}

@@ -1,0 +1,1 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,52267,e=>{"use strict";var i=e.i(43476),r=e.i(18566),o=e.i(85007);e.s(["AgendarFlow",0,function(){let e=(0,r.useSearchParams)();return(0,i.jsx)(o.BookingFlow,{variant:"page",initial:{serviceId:e.get("servico")??void 0,barberId:e.get("barbeiro")??void 0}})}])}]);

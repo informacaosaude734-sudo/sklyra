@@ -1,0 +1,6 @@
+User-Agent: *
+Allow: /
+Disallow: /sklyra/lab
+
+Host: https://informacaosaude734-sudo.github.io/sklyra
+Sitemap: https://informacaosaude734-sudo.github.io/sklyra/sitemap.xml
