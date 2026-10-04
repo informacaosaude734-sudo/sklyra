@@ -27,10 +27,15 @@ export const FOUNDED_YEAR: number | null = null;
 
 /**
  * Domínio público do site (sem barra no final). Usado em canonical, sitemap,
- * Open Graph e dados estruturados. Defina NEXT_PUBLIC_SITE_URL no deploy.
+ * Open Graph e dados estruturados. Defina NEXT_PUBLIC_SITE_URL no deploy
+ * quando houver domínio próprio; na Vercel, sem ela, usa o domínio de
+ * produção do projeto (VERCEL_PROJECT_PRODUCTION_URL).
  */
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "http://localhost:3000")
 ).replace(/\/$/, "");
 
 /* ------------------------------------------------------------------ */
