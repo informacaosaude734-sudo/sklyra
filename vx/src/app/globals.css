@@ -1,0 +1,1274 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   VX — DESIGN TOKENS
+   Toda cor, tipo, curva e medida do site sai daqui. Nada de valor solto.
+   ========================================================================== */
+
+@theme {
+  /* Cor */
+  --color-vx-black: #080808;
+  --color-vx-surface: #0e0e0e;
+  --color-vx-surface-2: #151515;
+  --color-vx-surface-3: #1d1d1e;
+  --color-vx-white: #f1efea;
+  --color-vx-muted: #8e9298;
+  --color-vx-dim: #5f6368;
+  --color-vx-metal: #bfc4ca;
+  --color-vx-sodium: #ff8a2b;
+  --color-vx-line: rgb(191 196 202 / 0.16);
+  --color-vx-line-strong: rgb(191 196 202 / 0.32);
+
+  /* Tipo */
+  --font-display: var(--font-mona), "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-schibsted), "Helvetica Neue", Arial, sans-serif;
+
+  /* Curvas */
+  --ease-vx: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-vx-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-vx-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Raio — cantos retos. Máximo 2px. */
+  --radius-vx: 2px;
+
+  /* Breakpoints extras */
+  --breakpoint-3xl: 1920px;
+}
+
+:root {
+  /* Duração */
+  --dur-fast: 160ms;
+  --dur-ui: 320ms;
+  --dur-reveal: 800ms;
+  --dur-cinema: 1200ms;
+
+  /* Layout */
+  --cols: 4;
+  --margin: clamp(1rem, 0.35rem + 2.8vw, 3.5rem);
+  --gutter: clamp(0.75rem, 0.5rem + 1vw, 1.5rem);
+  --container: 1720px;
+  --nav-h: 4.75rem;
+  --nav-h-compact: 4rem;
+  --section-y: clamp(6rem, 4rem + 7vw, 11rem);
+
+  /* Escala tipográfica (display = Mona Sans condensada) */
+  --fs-hero: clamp(3.1rem, 0.9rem + 9.6vw, 11.5rem);
+  --fs-xl: clamp(2.85rem, 1rem + 7vw, 8.75rem);
+  --fs-l: clamp(2.35rem, 1rem + 4.6vw, 6rem);
+  --fs-m: clamp(1.75rem, 1rem + 2.6vw, 3.6rem);
+  --fs-s: clamp(1.35rem, 1rem + 1.1vw, 2rem);
+  --fs-lead: clamp(1.125rem, 1rem + 0.45vw, 1.375rem);
+  --fs-body: clamp(1rem, 0.96rem + 0.12vw, 1.0625rem);
+  --fs-small: 0.875rem;
+  --fs-micro: 0.75rem;
+
+  --lh-display: 0.86;
+  --lh-tight: 1.15;
+  --lh-body: 1.6;
+
+  --tracking-display: -0.012em;
+  --tracking-caps: 0.06em;
+
+  /* Camadas */
+  --z-raised: 10;
+  --z-sticky: 40;
+  --z-nav: 50;
+  --z-overlay: 80;
+  --z-modal: 90;
+  --z-cursor: 100;
+
+  /* Material */
+  --chrome: linear-gradient(
+    100deg,
+    #6f747b 0%,
+    #e9ecef 22%,
+    #8f949b 38%,
+    #f7f8f9 52%,
+    #7b8087 70%,
+    #cfd3d8 100%
+  );
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+  color-scheme: dark;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --cols: 8;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --cols: 12;
+  }
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-padding-top: var(--nav-h-compact);
+    background: var(--color-vx-black);
+  }
+
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  .lenis:not(.lenis-autoToggle).lenis-stopped {
+    overflow: clip;
+  }
+
+  body {
+    background: var(--color-vx-black);
+    color: var(--color-vx-white);
+    font-family: var(--font-sans);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    overflow-x: clip;
+    min-height: 100dvh;
+  }
+
+  /* Grão de filme — fixo, estático, sem blend (barato para o compositor). */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-overlay);
+    pointer-events: none;
+    background-image: var(--grain);
+    background-size: 240px;
+    opacity: 0.045;
+  }
+
+  ::selection {
+    background: var(--color-vx-white);
+    color: var(--color-vx-black);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-vx-sodium);
+    outline-offset: 3px;
+    border-radius: var(--radius-vx);
+  }
+
+  img,
+  video,
+  canvas,
+  svg {
+    display: block;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   GRID EDITORIAL — 4 / 8 / 12
+   ========================================================================== */
+
+@utility vx-container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--margin);
+}
+
+@utility vx-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: var(--gutter);
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--margin);
+}
+
+@utility vx-section {
+  padding-block: var(--section-y);
+}
+
+/* ==========================================================================
+   TIPO
+   ========================================================================== */
+
+@utility t-display {
+  font-family: var(--font-display);
+  font-weight: 860;
+  font-stretch: 75%;
+  line-height: var(--lh-display);
+  letter-spacing: var(--tracking-display);
+  text-transform: uppercase;
+  font-kerning: normal;
+}
+
+@utility t-wide {
+  font-stretch: 125%;
+}
+
+@utility t-hero {
+  font-size: var(--fs-hero);
+}
+@utility t-xl {
+  font-size: var(--fs-xl);
+}
+@utility t-l {
+  font-size: var(--fs-l);
+}
+@utility t-m {
+  font-size: var(--fs-m);
+}
+@utility t-s {
+  font-size: var(--fs-s);
+}
+
+@utility t-lead {
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+}
+
+@utility t-small {
+  font-size: var(--fs-small);
+  line-height: 1.5;
+}
+
+/* Rótulo funcional: navegação, botões, metadados curtos. */
+@utility t-caps {
+  font-family: var(--font-sans);
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+@utility t-num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+@utility text-chrome {
+  background: var(--chrome);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Placeholder de dado não informado: legível, mas evidente. */
+@utility is-ph {
+  color: var(--color-vx-muted);
+  text-decoration: underline dotted rgb(191 196 202 / 0.5);
+  text-underline-offset: 0.25em;
+  text-decoration-thickness: 1px;
+}
+
+/* ==========================================================================
+   COMPONENTES BASE
+   ========================================================================== */
+
+@layer components {
+  /* Linha de corte — 1px cromo translúcido. Desenha da esquerda p/ direita. */
+  .cut-line {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      rgb(191 196 202 / 0.06),
+      rgb(191 196 202 / 0.38) 18%,
+      rgb(241 239 234 / 0.6) 50%,
+      rgb(191 196 202 / 0.38) 82%,
+      rgb(191 196 202 / 0.06)
+    );
+    transform-origin: left center;
+  }
+
+  /* Botão primário: papel sobre noite + brilho de lâmina no hover. */
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    min-height: 3.5rem;
+    padding: 0 1.75rem;
+    border-radius: var(--radius-vx);
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 650;
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    isolation: isolate;
+    transition:
+      transform var(--dur-fast) var(--ease-vx),
+      background-color var(--dur-ui) var(--ease-vx),
+      color var(--dur-ui) var(--ease-vx),
+      border-color var(--dur-ui) var(--ease-vx);
+  }
+
+  .btn:active {
+    transform: scale(0.98);
+  }
+
+  .btn-primary {
+    background: var(--color-vx-white);
+    color: var(--color-vx-black);
+  }
+
+  .btn-primary::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    background: linear-gradient(
+      100deg,
+      transparent 30%,
+      rgb(255 255 255 / 0.95) 46%,
+      #c9ced4 50%,
+      rgb(255 255 255 / 0.95) 54%,
+      transparent 70%
+    );
+    transform: translateX(-120%);
+    transition: transform 0ms;
+  }
+
+  .btn-primary:hover::before {
+    transform: translateX(120%);
+    transition: transform 900ms var(--ease-vx);
+  }
+
+  .btn-primary:hover {
+    background: #e2e4e6;
+  }
+
+  .btn-ghost {
+    color: var(--color-vx-white);
+    border: 1px solid var(--color-vx-line-strong);
+    background: transparent;
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--color-vx-white);
+    background: rgb(241 239 234 / 0.04);
+  }
+
+  .btn-lg {
+    min-height: 4.5rem;
+    padding: 0 2.5rem;
+    font-size: 0.9375rem;
+  }
+
+  /* Link com sublinhado que corta da esquerda e sai pela direita. */
+  .link-cut {
+    position: relative;
+    display: inline-block;
+    padding-block: 0.25em;
+  }
+
+  .link-cut::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform var(--dur-ui) var(--ease-vx);
+  }
+
+  .link-cut:hover::after,
+  .link-cut:focus-visible::after,
+  .link-cut[aria-current="true"]::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+
+  .link-cut.is-static::after {
+    transform: scaleX(1);
+    opacity: 0.35;
+  }
+
+  .link-cut.is-static:hover::after {
+    opacity: 1;
+  }
+
+  /* Indicador "aceso" — o único uso de sódio fora do foco. */
+  .lit {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--color-vx-sodium);
+    box-shadow: 0 0 12px 1px rgb(255 138 43 / 0.55);
+    border-radius: 1px;
+  }
+
+  /* Marcas de corte nos quadros de foto (folha de contato). */
+  .crop-marks {
+    position: absolute;
+    inset: -10px;
+    pointer-events: none;
+    --c: rgb(191 196 202 / 0.45);
+    background:
+      linear-gradient(var(--c), var(--c)) top left / 1px 12px no-repeat,
+      linear-gradient(var(--c), var(--c)) top left / 12px 1px no-repeat,
+      linear-gradient(var(--c), var(--c)) top right / 1px 12px no-repeat,
+      linear-gradient(var(--c), var(--c)) top right / 12px 1px no-repeat,
+      linear-gradient(var(--c), var(--c)) bottom left / 1px 12px no-repeat,
+      linear-gradient(var(--c), var(--c)) bottom left / 12px 1px no-repeat,
+      linear-gradient(var(--c), var(--c)) bottom right / 1px 12px no-repeat,
+      linear-gradient(var(--c), var(--c)) bottom right / 12px 1px no-repeat;
+  }
+
+  /* Revelação "corte": abre a partir da linha central. */
+  .reveal-cut {
+    clip-path: inset(50% 0 50% 0);
+    transition: clip-path var(--dur-reveal) var(--ease-vx);
+  }
+
+  .reveal-cut.is-in {
+    clip-path: inset(0 0 0 0);
+  }
+
+  /* Linha de título revelada por máscara (sobe de dentro da linha). */
+  .reveal-line {
+    display: block;
+    overflow: clip;
+    padding-block: 0.26em 0.22em;
+    margin-block: -0.26em -0.22em;
+  }
+
+  .reveal-line > span {
+    display: block;
+    transform: translateY(150%);
+    transition: transform var(--dur-reveal) var(--ease-vx);
+    transition-delay: calc(var(--i, 0) * 90ms);
+  }
+
+  .is-in .reveal-line > span,
+  .reveal-line.is-in > span {
+    transform: translateY(0);
+  }
+
+  .reveal-fade {
+    opacity: 0;
+    transition: opacity 900ms var(--ease-vx);
+  }
+
+  .reveal-fade.is-in {
+    opacity: 1;
+  }
+
+  .reveal-draw .cut-line,
+  .reveal-draw.cut-line {
+    transform: scaleX(0);
+    transition: transform 1.3s var(--ease-vx) 0.15s;
+  }
+
+  .reveal-draw.is-in .cut-line,
+  .reveal-draw.is-in.cut-line {
+    transform: scaleX(1);
+  }
+
+  /* Metadados editoriais (colofão). */
+  .manifesto-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: var(--fs-small);
+    color: var(--color-vx-muted);
+  }
+
+  .manifesto-meta dd {
+    margin: 0;
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   MOVIMENTO REDUZIDO — remove todo movimento espacial.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal-cut,
+  .reveal-cut.is-in {
+    clip-path: none;
+    transition: opacity var(--dur-ui) linear;
+  }
+
+  .reveal-line > span {
+    transform: none;
+    transition: none;
+  }
+
+  .reveal-draw .cut-line {
+    transform: none;
+    transition: none;
+  }
+
+  .btn-primary::before {
+    display: none;
+  }
+}
+
+/* Sem JS: tudo visível. */
+html:not(.js) .reveal-cut {
+  clip-path: none;
+}
+
+html:not(.js) .reveal-line > span {
+  transform: none;
+}
+
+html:not(.js) .reveal-fade {
+  opacity: 1;
+}
+
+html:not(.js) .reveal-draw .cut-line {
+  transform: none;
+}
+
+/* ==========================================================================
+   NAVEGAÇÃO
+   ========================================================================== */
+
+@layer components {
+  [tabindex="-1"]:focus:not(:focus-visible) {
+    outline: none;
+  }
+  section[tabindex="-1"]:focus {
+    outline: none;
+  }
+
+  .vx-nav__inner {
+    transform: translateY(0.75rem);
+    transition: transform var(--dur-ui) var(--ease-vx);
+  }
+
+  .vx-nav__bg {
+    position: absolute;
+    inset: 0;
+    background: rgb(8 8 8 / 0.72);
+    -webkit-backdrop-filter: blur(14px) saturate(1.1);
+    backdrop-filter: blur(14px) saturate(1.1);
+    border-bottom: 1px solid var(--color-vx-line);
+    opacity: 0;
+    transition: opacity var(--dur-ui) var(--ease-vx);
+  }
+
+  .vx-nav[data-state="compact"] .vx-nav__inner {
+    transform: translateY(0);
+  }
+
+  .vx-nav[data-state="compact"] .vx-nav__bg {
+    opacity: 1;
+  }
+
+  /* Menu: duas linhas que viram o X da marca. */
+  .vx-burger__lines {
+    position: relative;
+    width: 22px;
+    height: 10px;
+  }
+
+  .vx-burger__lines::before,
+  .vx-burger__lines::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 1.5px;
+    background: var(--color-vx-white);
+    transition: transform var(--dur-ui) var(--ease-vx);
+  }
+
+  .vx-burger__lines::before {
+    top: 0;
+  }
+  .vx-burger__lines::after {
+    bottom: 0;
+  }
+
+  .vx-burger.is-open .vx-burger__lines::before {
+    transform: translateY(4.25px) rotate(57.4deg);
+  }
+  .vx-burger.is-open .vx-burger__lines::after {
+    transform: translateY(-4.25px) rotate(-57.4deg);
+  }
+
+  /* Menu mobile em tela cheia. */
+  .vx-menu {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    max-width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--color-vx-black);
+    color: var(--color-vx-white);
+    opacity: 0;
+    transition:
+      opacity var(--dur-ui) var(--ease-vx),
+      overlay var(--dur-ui) allow-discrete,
+      display var(--dur-ui) allow-discrete;
+  }
+
+  .vx-menu[open] {
+    opacity: 1;
+  }
+
+  @starting-style {
+    .vx-menu[open] {
+      opacity: 0;
+    }
+  }
+
+  .vx-menu::backdrop {
+    background: transparent;
+  }
+
+  .vx-menu__list > li {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(0.4em);
+    transition:
+      clip-path 600ms var(--ease-vx),
+      transform 600ms var(--ease-vx);
+    transition-delay: calc(80ms + var(--i, 0) * 55ms);
+  }
+
+  .vx-menu[open] .vx-menu__list > li {
+    clip-path: inset(0 0 0 0);
+    transform: none;
+  }
+
+  @starting-style {
+    .vx-menu[open] .vx-menu__list > li {
+      clip-path: inset(0 0 100% 0);
+      transform: translateY(0.4em);
+    }
+  }
+
+  /* Painel de agendamento. */
+  .vx-dialog {
+    position: fixed;
+    inset: auto 0 0 0;
+    width: 100vw;
+    max-width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--color-vx-surface);
+    color: var(--color-vx-white);
+    transform: translateY(100%);
+    transition:
+      transform 460ms var(--ease-vx),
+      overlay 460ms allow-discrete,
+      display 460ms allow-discrete;
+  }
+
+  .vx-dialog[open] {
+    transform: none;
+  }
+
+  @starting-style {
+    .vx-dialog[open] {
+      transform: translateY(100%);
+    }
+  }
+
+  .vx-dialog::backdrop {
+    background: rgb(4 4 4 / 0);
+    transition:
+      background-color 460ms var(--ease-vx),
+      overlay 460ms allow-discrete,
+      display 460ms allow-discrete;
+  }
+
+  .vx-dialog[open]::backdrop {
+    background: rgb(4 4 4 / 0.66);
+  }
+
+  @starting-style {
+    .vx-dialog[open]::backdrop {
+      background: rgb(4 4 4 / 0);
+    }
+  }
+
+  .vx-dialog__panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .vx-dialog {
+      inset: 0 0 0 auto;
+      width: min(38rem, 100vw);
+      border-left: 1px solid var(--color-vx-line);
+      transform: translateX(100%);
+    }
+
+    @starting-style {
+      .vx-dialog[open] {
+        transform: translateX(100%);
+      }
+    }
+  }
+
+  /* Cursor auxiliar. */
+  .vx-cursor {
+    opacity: 0;
+    transition: opacity 200ms linear;
+    will-change: transform;
+  }
+
+  .vx-cursor[data-visible="true"] {
+    opacity: 1;
+  }
+
+  .vx-cursor__body {
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    display: grid;
+    place-items: center;
+    min-width: 8px;
+    height: 8px;
+    padding: 0;
+    background: var(--color-vx-white);
+    color: var(--color-vx-black);
+    border-radius: 1px;
+    transform-origin: top left;
+    transition:
+      transform var(--dur-ui) var(--ease-vx),
+      background-color var(--dur-fast) linear;
+    transform: scale(0.75);
+  }
+
+  .vx-cursor[data-active="true"] .vx-cursor__body {
+    height: 24px;
+    padding: 0 8px;
+    transform: scale(1);
+  }
+
+  .vx-cursor[data-pressed="true"] .vx-cursor__body {
+    transform: scale(0.6);
+  }
+
+  .vx-cursor__label {
+    font-family: var(--font-sans);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .vx-cursor[data-active="false"] .vx-cursor__label {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vx-menu__list > li {
+    clip-path: none;
+    transform: none;
+  }
+  .vx-dialog,
+  .vx-dialog[open] {
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   HERO
+   ========================================================================== */
+
+@layer components {
+  .hero-title {
+    display: flex;
+    flex-direction: column;
+    text-shadow: 0 0.02em 0.4em rgb(8 8 8 / 0.35);
+  }
+
+  /* Cada linha nasce da linha de corte: a de cima sobe, a de baixo desce. */
+  .hero-line {
+    display: block;
+    overflow: clip;
+    padding-block: 0.24em 0.26em;
+    margin-block: -0.24em -0.26em;
+  }
+
+  .hero-line > span {
+    display: block;
+    will-change: transform;
+    animation: vx-rise 1.15s var(--ease-vx) 0.35s both;
+  }
+
+  .hero-line--down > span {
+    animation-name: vx-drop;
+  }
+
+  .hero-line--down {
+    padding-left: 0;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-line--down {
+      padding-left: calc((100% - 11 * var(--gutter)) / 12 + var(--gutter));
+    }
+  }
+
+  .hero-cut {
+    display: block;
+    position: relative;
+    height: 1px;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-block: 0.2em;
+    background: linear-gradient(
+      90deg,
+      rgb(191 196 202 / 0.05),
+      rgb(191 196 202 / 0.45) 22%,
+      rgb(241 239 234 / 0.75) 62%,
+      rgb(191 196 202 / 0.3) 88%,
+      rgb(191 196 202 / 0.05)
+    );
+    transform-origin: left center;
+    animation: vx-draw 1.3s var(--ease-vx) 0.05s both;
+  }
+
+  .hero-fade {
+    animation: vx-fade 0.8s var(--ease-vx) var(--d, 0ms) both;
+  }
+
+  /* Monograma: centrado na linha de corte. */
+  .hero-mark {
+    top: 50%;
+    right: -30vw;
+    width: min(118vw, 34rem);
+    aspect-ratio: 1;
+    transform: translateY(-50%);
+    opacity: 0.55;
+  }
+
+  @media (min-width: 768px) {
+    .hero-mark {
+      right: -20vw;
+      width: min(80vw, 46rem);
+      opacity: 0.6;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-mark {
+      right: -7vw;
+      width: min(58vw, 96svh, 56rem);
+      opacity: 1;
+    }
+  }
+
+  .hero-mark__half--top {
+    clip-path: inset(0 0 50% 0);
+    animation: vx-half-top 1.2s var(--ease-vx) 0.15s both;
+  }
+
+  .hero-mark__half--bottom {
+    clip-path: inset(50% 0 0 0);
+    animation: vx-half-bottom 1.2s var(--ease-vx) 0.15s both;
+  }
+}
+
+@keyframes vx-rise {
+  from {
+    transform: translateY(150%);
+  }
+}
+
+@keyframes vx-drop {
+  from {
+    transform: translateY(-150%);
+  }
+}
+
+@keyframes vx-draw {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes vx-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes vx-half-top {
+  from {
+    transform: translateY(-9%);
+    opacity: 0;
+  }
+}
+
+@keyframes vx-half-bottom {
+  from {
+    transform: translateY(9%);
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   SERVIÇOS
+   ========================================================================== */
+
+@layer components {
+  .services__wash {
+    position: absolute;
+    inset: 0;
+    background: var(--color-vx-surface-2);
+    transform: scaleY(0);
+    transition: transform 520ms var(--ease-vx);
+    pointer-events: none;
+  }
+
+  .services__row.is-active .services__wash {
+    transform: scaleY(1);
+  }
+
+  .services__name {
+    white-space: nowrap;
+    transition: font-stretch 520ms var(--ease-vx), color var(--dur-fast) linear;
+  }
+
+  .services__desc {
+    font-size: var(--fs-small);
+    line-height: 1.5;
+    max-width: 34ch;
+    transition: color var(--dur-ui) var(--ease-vx);
+  }
+
+  .services__row.is-active .services__desc {
+    color: var(--color-vx-white);
+  }
+
+  .services__panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+      grid-template-rows 480ms var(--ease-vx),
+      visibility 0s linear 480ms;
+  }
+
+  .services__row.is-open .services__panel {
+    grid-template-rows: 1fr;
+    visibility: visible;
+    transition:
+      grid-template-rows 480ms var(--ease-vx),
+      visibility 0s linear 0s;
+  }
+
+  .services__book {
+    opacity: 0;
+    transform: translate(-0.75rem, -50%);
+    transition:
+      opacity var(--dur-ui) var(--ease-vx),
+      transform var(--dur-ui) var(--ease-vx);
+  }
+
+  @media (hover: hover) and (min-width: 1024px) {
+    .services__row.is-active .services__name {
+      font-stretch: 118%;
+    }
+
+    .services__meta {
+      opacity: 0.6;
+      transition: opacity var(--dur-ui) var(--ease-vx);
+    }
+
+    .services__row.is-active .services__meta {
+      opacity: 1;
+    }
+
+  }
+
+  @media (hover: hover) and (min-width: 1280px) {
+    .services__row.is-active .services__book {
+      opacity: 1;
+      transform: translate(0, -50%);
+    }
+
+    .services__meta {
+      padding-right: 6.5rem;
+    }
+  }
+
+  .services__float {
+    width: clamp(220px, 19vw, 340px);
+    aspect-ratio: 4 / 5;
+    opacity: 0;
+    transition: opacity 360ms var(--ease-vx);
+  }
+
+  .services__float.is-on {
+    opacity: 1;
+  }
+
+  .services__float-inner {
+    position: absolute;
+    inset: 0;
+    transform: translate(-50%, -55%) scale(0.92);
+    transition: transform 520ms var(--ease-vx);
+  }
+
+  .services__float.is-on .services__float-inner {
+    transform: translate(-50%, -55%) scale(1);
+  }
+
+  .services__float-img {
+    clip-path: inset(50% 0 50% 0);
+    transition: clip-path 620ms var(--ease-vx);
+  }
+
+  .services__float-img.is-current {
+    clip-path: inset(0 0 0 0);
+    z-index: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services__float-img,
+  .services__float-img.is-current {
+    clip-path: none;
+    opacity: 0;
+    transition: opacity var(--dur-ui) linear;
+  }
+  .services__float-img.is-current {
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
+   THE VX CUT
+   ========================================================================== */
+
+@layer components {
+  .vxcut__frame {
+    clip-path: inset(0 0 0 0);
+    transition: clip-path 1.05s var(--ease-vx);
+  }
+
+  .vxcut__frame[data-state="future"][data-from="left"] {
+    clip-path: inset(0 100% 0 0);
+  }
+  .vxcut__frame[data-state="future"][data-from="right"] {
+    clip-path: inset(0 0 0 100%);
+  }
+  .vxcut__frame[data-state="future"][data-from="bottom"] {
+    clip-path: inset(100% 0 0 0);
+  }
+  .vxcut__frame[data-state="future"][data-from="top"] {
+    clip-path: inset(0 0 100% 0);
+  }
+  .vxcut__frame[data-state="future"][data-from="center"] {
+    clip-path: inset(50% 0 50% 0);
+  }
+
+  .vxcut__img {
+    transform: scale(1.14);
+    transition: transform 1.7s var(--ease-vx);
+  }
+
+  .vxcut__frame[data-state="active"] .vxcut__img,
+  .vxcut__frame[data-state="past"] .vxcut__img {
+    transform: scale(1);
+  }
+}
+
+/* ==========================================================================
+   GALERIA · BARBEIROS · RODAPÉ
+   ========================================================================== */
+
+@layer components {
+  .gallery__zoom {
+    transition: transform 1.2s var(--ease-vx);
+  }
+
+  @media (hover: hover) {
+    .group:hover .gallery__zoom {
+      transform: scale(1.035);
+    }
+  }
+
+  .vx-lightbox {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    max-width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgb(5 5 5 / 0.97);
+    color: var(--color-vx-white);
+    opacity: 0;
+    transition:
+      opacity var(--dur-ui) var(--ease-vx),
+      overlay var(--dur-ui) allow-discrete,
+      display var(--dur-ui) allow-discrete;
+  }
+
+  .vx-lightbox[open] {
+    opacity: 1;
+  }
+
+  @starting-style {
+    .vx-lightbox[open] {
+      opacity: 0;
+    }
+  }
+
+  .vx-lightbox::backdrop {
+    background: transparent;
+  }
+
+  .vx-lightbox__frame {
+    animation: vx-open-cut 700ms var(--ease-vx) both;
+  }
+
+  @keyframes vx-open-cut {
+    from {
+      clip-path: inset(50% 0 50% 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  .barbers__photo {
+    clip-path: inset(50% 0 50% 0);
+    transition: clip-path 760ms var(--ease-vx);
+  }
+
+  .barbers__photo.is-current {
+    clip-path: inset(0 0 0 0);
+    z-index: 1;
+  }
+
+  .barbers__name {
+    color: rgb(241 239 234 / 0.45);
+    transition:
+      color var(--dur-ui) var(--ease-vx),
+      font-stretch 520ms var(--ease-vx);
+  }
+
+  .barbers__name--ph {
+    font-size: var(--fs-s);
+  }
+
+  .barbers__row.is-on .barbers__name {
+    color: var(--color-vx-white);
+  }
+
+  @media (hover: hover) {
+    .barbers__row.is-on .barbers__name {
+      font-stretch: 100%;
+    }
+  }
+
+  /* VX gigante: abre de 75% a 125% de largura ao entrar na tela. */
+  .footer-vx {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    --vx-fit: min(53vw, calc((min(100vw, var(--container)) - 2 * var(--margin)) / 1.72));
+    font-size: var(--vx-fit);
+    font-weight: 860;
+    font-stretch: 125%;
+    line-height: 0.74;
+    letter-spacing: -0.02em;
+    margin-bottom: -0.04em;
+    background: linear-gradient(
+      to bottom,
+      var(--color-vx-white) 0 49.2%,
+      transparent 49.2% 50.8%,
+      #2a2c2f 50.8% 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .footer-vx {
+        animation: vx-stretch linear both;
+        animation-timeline: view();
+        animation-range: entry 10% cover 45%;
+      }
+    }
+  }
+
+  @keyframes vx-stretch {
+    from {
+      font-stretch: 75%;
+      letter-spacing: 0.04em;
+    }
+    to {
+      font-stretch: 125%;
+      letter-spacing: -0.02em;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .barbers__photo,
+  .barbers__photo.is-current {
+    clip-path: none;
+    opacity: 0;
+    transition: opacity var(--dur-ui) linear;
+  }
+  .barbers__photo.is-current {
+    opacity: 1;
+  }
+  .vx-lightbox__frame {
+    animation: none;
+  }
+}
