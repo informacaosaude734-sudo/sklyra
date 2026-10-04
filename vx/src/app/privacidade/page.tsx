@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { CITY, EMAIL, STATE } from "@/config/brand";
+import { CITY, EMAIL, SITE_URL, STATE } from "@/config/brand";
 import { PH } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "Política de Privacidade",
   description: "Como a VX trata os dados de quem visita o site e agenda um horário.",
-  alternates: { canonical: "/privacidade" },
+  alternates: { canonical: `${SITE_URL}/privacidade` },
 };
 
 /**

@@ -2,6 +2,7 @@ import Image from "next/image";
 import { SHOW_PHOTO_BRIEFS } from "@/config/brand";
 import { cn } from "@/lib/cn";
 import { TEXTURE_SRC, type MediaRef } from "@/lib/media";
+import { asset } from "@/lib/base";
 
 type Props = {
   media: MediaRef;
@@ -44,7 +45,7 @@ export function Media({
     >
       {isReal ? (
         <Image
-          src={media.src!}
+          src={asset(media.src!)}
           alt={media.alt}
           fill
           sizes={sizes}

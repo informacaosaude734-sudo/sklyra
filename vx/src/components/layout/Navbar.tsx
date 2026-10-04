@@ -12,6 +12,7 @@ import { NAV } from "@/data/nav";
 import { cn } from "@/lib/cn";
 import { formatInstagram, PH } from "@/lib/format";
 import { whatsappUrl } from "@/lib/whatsapp";
+import { asset } from "@/lib/base";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -95,7 +96,7 @@ export function Navbar() {
                 return (
                   <li key={item.id}>
                     <a
-                      href={item.href}
+                      href={asset(item.href)}
                       aria-current={on ? "true" : undefined}
                       className={cn(
                         "link-cut t-caps inline-flex items-center gap-2 transition-colors duration-[var(--dur-fast)]",
@@ -161,7 +162,7 @@ export function Navbar() {
               {NAV.map((item, i) => (
                 <li key={item.id} style={{ "--i": i } as React.CSSProperties} className="border-b border-vx-line">
                   <a
-                    href={item.href}
+                    href={asset(item.href)}
                     className="t-display flex items-baseline justify-between py-3 text-[clamp(2.6rem,11vw,4.5rem)] text-vx-white"
                   >
                     <span>{item.label}</span>

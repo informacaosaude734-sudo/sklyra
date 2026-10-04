@@ -4,12 +4,13 @@ import { BookingFlow } from "@/components/booking/BookingFlow";
 import { AgendarFlow } from "./AgendarFlow";
 import { VXMark } from "@/components/brand/VXMark";
 import { CITY, STATE } from "@/config/brand";
+import { SITE_URL } from "@/config/brand";
 
 export const metadata: Metadata = {
   title: "Agendar horário",
   description:
     "Agende seu corte, barba ou acabamento na VX, barbearia no Rio de Janeiro. Escolha serviço, barbeiro, dia e horário e confirme pelo WhatsApp.",
-  alternates: { canonical: "/agendar" },
+  alternates: { canonical: `${SITE_URL}/agendar` },
 };
 
 export default function AgendarPage() {

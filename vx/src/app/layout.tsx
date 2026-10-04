@@ -7,6 +7,7 @@ import { StickyBooking } from "@/components/layout/StickyBooking";
 import { Cursor } from "@/components/motion/Cursor";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { SITE_URL } from "@/config/brand";
+import { BASE_PATH } from "@/lib/base";
 import { SEO } from "@/lib/seo";
 import "./globals.css";
 
@@ -28,7 +29,8 @@ const schibsted = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  // O Next já acrescenta a subpasta (basePath) às URLs de metadados: a base é só a origem.
+  metadataBase: new URL(BASE_PATH && SITE_URL.endsWith(BASE_PATH) ? SITE_URL.slice(0, -BASE_PATH.length) : SITE_URL),
   title: {
     default: SEO.title,
     template: "%s — VX Barbearia · Rio de Janeiro",
@@ -41,11 +43,11 @@ export const metadata: Metadata = {
     "barbeiro Rio de Janeiro",
     "corte masculino Rio de Janeiro",
   ],
-  alternates: { canonical: "/" },
+  alternates: { canonical: `${SITE_URL}/` },
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    url: "/",
+    url: `${SITE_URL}/`,
     siteName: "VX",
     title: SEO.title,
     description: SEO.description,

@@ -3,6 +3,7 @@ import { BookLink } from "@/components/booking/BookingProvider";
 import { HeroMark } from "@/components/sections/HeroMark";
 import { HeroMotion } from "@/components/sections/HeroMotion";
 import { COUNTRY, CITY, HERO_MEDIA } from "@/config/brand";
+import { asset } from "@/lib/base";
 
 /**
  * Primeiro viewport. A linha de corte atravessa a tela: "Seu corte." nasce
@@ -19,7 +20,7 @@ export function Hero() {
       {/* Fundo: luz de estúdio + concreto quase invisível */}
       <div aria-hidden className="hero__bg absolute inset-0 -z-20">
         <Image
-          src="/media/textures/concrete.webp"
+          src={asset("/media/textures/concrete.webp")}
           alt=""
           fill
           priority
@@ -36,8 +37,8 @@ export function Hero() {
           {HERO_MEDIA.type === "video" ? (
             <video
               className="h-full w-full object-cover opacity-50"
-              src={HERO_MEDIA.src}
-              poster={HERO_MEDIA.poster}
+              src={asset(HERO_MEDIA.src)}
+              poster={HERO_MEDIA.poster ? asset(HERO_MEDIA.poster) : undefined}
               autoPlay
               muted
               loop
@@ -46,7 +47,7 @@ export function Hero() {
             />
           ) : (
             <Image
-              src={HERO_MEDIA.src}
+              src={asset(HERO_MEDIA.src)}
               alt={HERO_MEDIA.alt}
               fill
               priority

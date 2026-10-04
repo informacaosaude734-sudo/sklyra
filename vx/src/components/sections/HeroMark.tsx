@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { heroState } from "@/three/heroState";
 import { prefersReducedMotion } from "@/lib/motion";
 import { cn } from "@/lib/cn";
+import { asset } from "@/lib/base";
 
 const VXScene = dynamic(() => import("@/three/VXScene"), { ssr: false });
 
@@ -73,12 +74,12 @@ export function HeroMark() {
         <div className={cn("absolute inset-0 transition-opacity duration-700", ready && "opacity-0")}>
           <div className="absolute inset-0" data-hero-half="top">
             <div className="hero-mark__half--top absolute inset-0">
-              <Image src="/media/vx-chrome.webp" alt="" fill priority sizes="(min-width: 768px) 50vw, 90vw" className="object-contain" />
+              <Image src={asset("/media/vx-chrome.webp")} alt="" fill priority sizes="(min-width: 768px) 50vw, 90vw" className="object-contain" />
             </div>
           </div>
           <div className="absolute inset-0" data-hero-half="bottom">
             <div className="hero-mark__half--bottom absolute inset-0">
-              <Image src="/media/vx-chrome.webp" alt="" fill priority sizes="(min-width: 768px) 50vw, 90vw" className="object-contain" />
+              <Image src={asset("/media/vx-chrome.webp")} alt="" fill priority sizes="(min-width: 768px) 50vw, 90vw" className="object-contain" />
             </div>
           </div>
         </div>

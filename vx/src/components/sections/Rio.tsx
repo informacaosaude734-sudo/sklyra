@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Parallax } from "@/components/motion/Parallax";
 import { Reveal, RevealLines } from "@/components/motion/Reveal";
 import { CITY, STATE } from "@/config/brand";
+import { asset } from "@/lib/base";
 
 /** O Rio urbano — asfalto molhado, luz de sódio, rua. Sem cartão-postal. */
 export function Rio() {
@@ -10,7 +11,7 @@ export function Rio() {
       <div aria-hidden className="absolute inset-0 -z-10">
         <Parallax amount={14} scale={1.16} className="h-full">
           <Image
-          src="/media/textures/asphalt.webp"
+          src={asset("/media/textures/asphalt.webp")}
           alt=""
           fill
           sizes="100vw"

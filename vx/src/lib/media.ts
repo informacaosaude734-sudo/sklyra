@@ -1,3 +1,5 @@
+import { asset } from "@/lib/base";
+
 /**
  * Referência de mídia usada em todo o site.
  *
@@ -34,15 +36,15 @@ export type MediaRef = {
 };
 
 export const TEXTURE_SRC: Record<Texture, string> = {
-  fade: "/media/textures/fade.webp",
-  texture: "/media/textures/texture.webp",
-  line: "/media/textures/line.webp",
-  blade: "/media/textures/blade.webp",
-  steel: "/media/textures/steel.webp",
-  strips: "/media/textures/strips.webp",
-  concrete: "/media/textures/concrete.webp",
-  asphalt: "/media/textures/asphalt.webp",
-  mirror: "/media/textures/mirror.webp",
+  fade: asset("/media/textures/fade.webp"),
+  texture: asset("/media/textures/texture.webp"),
+  line: asset("/media/textures/line.webp"),
+  blade: asset("/media/textures/blade.webp"),
+  steel: asset("/media/textures/steel.webp"),
+  strips: asset("/media/textures/strips.webp"),
+  concrete: asset("/media/textures/concrete.webp"),
+  asphalt: asset("/media/textures/asphalt.webp"),
+  mirror: asset("/media/textures/mirror.webp"),
 };
 
 export const ratioToNumber = (r: Ratio) => {

@@ -94,7 +94,8 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       const a = (e.target as Element | null)?.closest?.("a[href*='#']") as HTMLAnchorElement | null;
       if (!a || a.target === "_blank") return;
       const url = new URL(a.href, window.location.href);
-      if (url.origin !== window.location.origin || url.pathname !== window.location.pathname)
+      const norm = (p: string) => p.replace(/\/$/, "");
+      if (url.origin !== window.location.origin || norm(url.pathname) !== norm(window.location.pathname))
         return;
       const id = decodeURIComponent(url.hash.slice(1));
       const el = id ? document.getElementById(id) : null;

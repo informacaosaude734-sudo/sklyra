@@ -6,6 +6,7 @@ import { formatInstagram, formatWhatsapp, PH } from "@/lib/format";
 import { hasHours, hoursLines } from "@/lib/hours";
 import { hasWhatsapp, whatsappUrl } from "@/lib/whatsapp";
 import { WHATSAPP_NUMBER } from "@/config/brand";
+import { asset } from "@/lib/base";
 
 export function Footer() {
   const wa = whatsappUrl();
@@ -88,7 +89,7 @@ export function Footer() {
               {FOOTER_LINKS.map((l) => (
                 <li key={l.href}>
                   {l.href.startsWith("/#") ? (
-                    <a href={l.href} className="link-cut text-vx-white/80 hover:text-vx-white">
+                    <a href={asset(l.href)} className="link-cut text-vx-white/80 hover:text-vx-white">
                       {l.label}
                     </a>
                   ) : (
